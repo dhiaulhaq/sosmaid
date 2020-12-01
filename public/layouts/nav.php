@@ -18,33 +18,35 @@ if(isset($session)){
           <li class="nav-item active">
             <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
           </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="#">User</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Post</a>
-          </li>
+          
+          <?php if($logged){ ?>
+            <li class="nav-item">
+              <a class="nav-link" href="/pages/listuser.php">User</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/pages/newpost.php">Post</a>
+            </li>
+          <?php } ?>
           
         </ul>
         <ul class="navbar-nav">
 
           <?php if(!$logged){ ?>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/pages/register.php">Register</a>
-          </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/pages/login.php">Login</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/pages/register.php">Register</a>
+            </li>
           <?php }?>
 
           <?php if($logged){ ?>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Hi <?php echo $nama; ?></a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/pages/logout.php">Logout</a>
-          </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Hi, <?php echo $nama; ?></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/pages/logout.php">Logout</a>
+            </li>
           <?php }?>
 
         </ul>
