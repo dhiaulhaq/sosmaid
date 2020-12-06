@@ -5,6 +5,7 @@ require_once("../../includes/helper.php");
 require_once("../../includes/session.php");
 require_once("../../includes/post.php");
 require_once("../../includes/like.php");
+require_once("../../includes/comment.php");
 
 if(isset($session)){
     $logged = $session->user_loggedin();
@@ -25,6 +26,13 @@ $postliked = $like->postliked();
 if($postliked){
     $hearticon = '<i class="fas fa-heart"></i>';
 }
+
+$totalc = 0;
+$comment = new Comment;
+$comment->post_id = $_GET['pid'];
+$comment->user_id = $logged;
+$postcomments = $comment->cari_dgn_id();
+$totalc = $comment->totalcomment($comment->post_id);
 
 $user = new User;
 
@@ -64,6 +72,7 @@ $user = new User;
                     <div class="col-md-6">
                         <div class="float-right">
                             <span class="commenticon"><i class="far fa-comments"></i></span>
+                            <span class="totalcomment"><?php echo $totalc; ?></span>
                         </div>
                     </div>
                 </div>
@@ -77,44 +86,30 @@ $user = new User;
                             </div>
                             <div class="commentBox">
                                 
-                                <p class="taskDescription">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                <p class="taskDescription">Beri komentar...</p>
                             </div>
                             <div class="actionBox">
                                 <ul class="commentList">
-                                    <li>
-                                        <div class="commenterImage">
-                                        <img src="http://placekitten.com/50/50" />
-                                        </div>
-                                        <div class="commentText">
-                                            <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
+                                    <?php foreach ($postcomments as $pc) { ?>
+                                        <li>
+                                            <div class="commenterImage">
+                                            <a href="/index.php?visiteduid=<?php echo $pc['user_id']; ?>" >
+                                            <img src="../images/<?php echo $user->userphoto($pc['user_id']); ?>" />
+                                            </div>
+                                            <div class="commentText">
+                                            
+                                                <p class=""><?php echo $pc['comment'] ?></p> <span class="date sub-text"><?php echo $pc['created_at']; ?></span>
 
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="commenterImage">
-                                        <img src="http://placekitten.com/45/45" />
-                                        </div>
-                                        <div class="commentText">
-                                            <p class="">Hello this is a test comment and this comment is particularly very long and it goes on and on and on.</p> <span class="date sub-text">on March 5th, 2014</span>
-
-                                        </div>
-                                    </li>
-                                    <li>
-                                        <div class="commenterImage">
-                                        <img src="http://placekitten.com/40/40" />
-                                        </div>
-                                        <div class="commentText">
-                                            <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
-
-                                        </div>
-                                    </li>
+                                            </div>
+                                        </li>
+                                    <?php } ?>
                                 </ul>
                                 <form class="form-inline" role="form">
                                     <div class="form-group">
-                                        <input class="form-control" type="text" placeholder="Your comments" />
+                                        <input class="form-control" type="text" placeholder="Your comments" id="yourcomment" />
                                     </div>
                                     <div class="form-group">
-                                        <button class="btn btn-default">Add</button>
+                                        <button class="btn btn-default" id="sendcomment">SEND</button>
                                     </div>
                                 </form>
                             </div>

@@ -27,4 +27,32 @@ $( document ).ready(function() {
             }
         });
     });
+
+    /* COMMENT */
+    $("#sendcomment").click(function(e){
+        e.preventDefault();
+        var pid = $("#post_id").val();
+        var uid = $("#user_id").val();
+        var comment = $("#yourcomment").val();
+        var base_url = window.location.origin;
+
+        $.ajax({
+            type: 'POST',
+            url: base_url + '/pages/updatecomment.php',
+            dataType: 'json',
+            data: {post_id:pid, uid:uid, comment:comment},
+            beforeSend: function(){
+                $(".loader").css("visibility", "visible");
+            },
+            success: function(response){
+                console.log("Success");
+            },
+            error: function(response){
+                console.log(response);
+            },
+            complete: function(data){
+                $(".loader").css("visibility", "hidden");
+            }
+        });
+    });
 });
