@@ -199,7 +199,7 @@ class User{
         }catch(Exception $e){
             $hasil = 0;
         }
-        return $hasil;
+        return $hasil['photo'];
     }
 
 }

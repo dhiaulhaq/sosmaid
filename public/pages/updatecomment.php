@@ -23,7 +23,7 @@ if(!empty($_POST['post_id'])){
         $allcomment .= "<li>";
         $allcomment .= "<div class='commenterImage'>";
         $allcomment .= "<a href='/index.php?visiteduid={$visiteduid}' >";
-        $allcomment .= "<img src='../images/{photo}' />";
+        $allcomment .= "<img src='../images/{photo}' /></a>";
         $allcomment .= "</div>";
         $allcomment .= "<div class='commentText'>";
         $allcomment .= "<p>{$com}</p> <span class='date sub-text'>{$created_at}</span>";

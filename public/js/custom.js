@@ -45,7 +45,41 @@ $( document ).ready(function() {
                 $(".loader").css("visibility", "visible");
             },
             success: function(response){
-                console.log("Success");
+                $(".totalcomment").empty();
+                $(".totalcomment").append(response.total);
+                $(".commentList").empty();
+                $(".commentList").append(response.allcomment);
+            },
+            error: function(response){
+                console.log(response);
+            },
+            complete: function(data){
+                $(".loader").css("visibility", "hidden");
+            }
+        });
+    });
+
+    /* CHANGE PASSWORD */
+    $("#savepassword").click(function(e){
+        e.preventDefault();
+        var np = $("#newpassword").val();
+        var cp = $("#confirmpassword").val();
+        if(cp!=np){
+            alert("Pastikan password sama!");
+        }
+        var base_url = window.location.origin;
+
+        $.ajax({
+            type: 'POST',
+            url: base_url + '/pages/updatepassword.php',
+            dataType: 'json',
+            data: {newpass:np},
+            beforeSend: function(){
+                $(".loader").css("visibility", "visible");
+            },
+            success: function(response){
+                $("#pesan").empty();
+                $("#pesan").append(response.pesan);
             },
             error: function(response){
                 console.log(response);

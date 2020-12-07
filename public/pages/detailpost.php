@@ -94,7 +94,7 @@ $user = new User;
                                         <li>
                                             <div class="commenterImage">
                                             <a href="/index.php?visiteduid=<?php echo $pc['user_id']; ?>" >
-                                            <img src="../images/<?php echo $user->userphoto($pc['user_id']); ?>" />
+                                            <img src="../images/<?php echo $user->userphoto($pc['user_id']); ?>" /></a>
                                             </div>
                                             <div class="commentText">
                                             

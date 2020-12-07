@@ -4,6 +4,8 @@ require_once("../includes/user.php");
 require_once("../includes/session.php");
 require_once("../includes/helper.php");
 require_once("../includes/post.php");
+require_once("../includes/like.php");
+require_once("../includes/comment.php");
 
 $fname = "";
 $visiteduid = 0;
@@ -26,6 +28,8 @@ if(isset($session)){
 
 $post = new Post;
 $userposts = $post->cari_userpost($visiteduid);
+$like = new Like;
+$comment = new Comment;
 
 ?>
 
@@ -37,12 +41,14 @@ $userposts = $post->cari_userpost($visiteduid);
   <body>
 
     <?php require_once("layouts/nav.php")?>
-
-    <main role="main" class="container">
     
     <header>
 
       <div class="container">
+
+        <div class="row">
+          <div id="pesan" class="col"></div>
+        </div>
 
         <div class="profile">
 
@@ -56,10 +62,11 @@ $userposts = $post->cari_userpost($visiteduid);
 
             <h1 class="profile-user-name"><?php echo $fname; ?>_</h1>
 
-            <button class="btn profile-edit-btn">Edit Profile</button>
-
+            <?php if($visiteduid == $logged) {?>
+              <button class="btn profile-edit-btn" data-toggle="modal" data-target="#exampleModal">Ganti Password</button>
+            <?php } ?>
             <button class="btn profile-settings-btn" aria-label="profile settings"><i class="fas fa-cog" aria-hidden="true"></i></button>
-
+              
           </div>
 
           <div class="profile-stats">
@@ -86,8 +93,6 @@ $userposts = $post->cari_userpost($visiteduid);
 
       </header>
 
-      <main>
-
       <div class="container">
 
         <div class="gallery">
@@ -103,8 +108,8 @@ $userposts = $post->cari_userpost($visiteduid);
                 <div class="gallery-item-info">
 
                   <ul>
-                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i> 56</li>
-                    <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i> 2</li>
+                    <li class="gallery-item-likes"><span class="visually-hidden">Likes:</span><i class="fas fa-heart" aria-hidden="true"></i><?php echo $like->totallike($post['id']); ?></li>
+                    <li class="gallery-item-comments"><span class="visually-hidden">Comments:</span><i class="fas fa-comment" aria-hidden="true"></i><?php echo $comment->totalcomment($post['id']); ?></li>
                   </ul>
 
                 </div>
@@ -123,11 +128,36 @@ $userposts = $post->cari_userpost($visiteduid);
       </div>
       <!-- End of container -->
 
-      </main>
-
-    </main><!-- /.container -->
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="newpassword">New Password</label>
+                <input type="password" name="newpassword" class="form-control" id="newpassword" placeholder="New Password">
+              </div>
+              <div class="form-group">
+                <label for="confirmpassword">Confrim Password</label>
+                <input type="password" name="confirmpassword" class="form-control" id="confirmpassword" placeholder="Confirm Password">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="savepassword" data-dismiss="modal">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     <?php require_once("layouts/footer.php")?>
 
   </body>
+  
 </html>
